@@ -1,22 +1,19 @@
-import React, { InputHTMLAttributes } from "react";
-import { UseFormRegisterReturn } from "react-hook-form";
+import { InputHTMLAttributes } from 'react'
 
 interface ICustomInputProps extends InputHTMLAttributes<HTMLInputElement> {
-  label: string;
-  register: UseFormRegisterReturn;
+  label: string
 }
 
-export function CustomInput({ label, register, ...inputProps }: ICustomInputProps) {
+export function CustomInput({ label, ...inputProps }: ICustomInputProps) {
   return (
     <div>
-      <label className="block font-bold mb-2" htmlFor={label}>
+      <label className="mb-2 block font-bold" htmlFor={label}>
         {label}
       </label>
       <input
-        className="shadow appearance-none border rounded w-full py-5 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        {...register}
+        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-5 leading-tight text-gray-700 shadow focus:outline-none"
         {...inputProps}
       />
     </div>
-  );
+  )
 }

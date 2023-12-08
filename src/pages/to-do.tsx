@@ -1,17 +1,9 @@
-import React from "react";
-import { useRouter } from "next/router";
-import { parseCookies } from 'nookies'
-
-import { useAuth } from "@/contexts/AuthContext";
-import { Header } from "@/components/Header";
-import { ProtectedRoute } from "@/components/ProtectedRoute";
-
+import { Header } from '@/components/Header'
+import { ProtectedRoute } from '@/components/ProtectedRoute'
+import { useAuth } from '@/contexts/AuthContext'
 
 export default function Auth() {
-  const router = useRouter();
-  const { code } = router.query;
-  const cookies = parseCookies();
-  const {  isAuthenticated, user, loginWithGoogle, loginWithGithub, logout } = useAuth()
+  const { isAuthenticated } = useAuth()
 
   return (
     <ProtectedRoute>
@@ -19,7 +11,7 @@ export default function Auth() {
       <div className="items-center justify-center">
         <div className="bg-gray dark:bg-primary">
           <div className="my-04 mx-auto max-w-4xl px-12 py-[7.40rem]">
-            <div className="flex items-center flex-col justify-center py-20 text-textBlack dark:text-textPrimary">
+            <div className="text-textBlack dark:text-textPrimary flex flex-col items-center justify-center py-20">
               <div className="flex">
                 {isAuthenticated && <p>Autenticado</p>}
               </div>
@@ -28,5 +20,5 @@ export default function Auth() {
         </div>
       </div>
     </ProtectedRoute>
-  );
+  )
 }
