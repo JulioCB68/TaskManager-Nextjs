@@ -22,7 +22,7 @@ export default async function getAccessToken(
     },
   )
 
-  const { accessToken } = accessTokenResponse.data
+  const { access_token: accessToken } = accessTokenResponse.data
 
   const userResponse = await axios.get('https://api.github.com/user', {
     headers: {
