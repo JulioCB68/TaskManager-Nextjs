@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { parseCookies } from 'nookies'
@@ -10,7 +9,7 @@ import { Button } from './Button'
 export function Header() {
   const router = useRouter()
   const cookies = parseCookies()
-  const { user, logout, loginWithGoogle } = useAuth()
+  const { user, logout } = useAuth()
 
   function handleLogout() {
     logout()
@@ -18,7 +17,7 @@ export function Header() {
   }
 
   return (
-    <header className="flex items-center justify-between bg-gray-800 px-6 py-4 text-white">
+    <header className="flex items-center justify-between bg-github px-6 py-4 text-white">
       <h1 className="text-xl font-semibold">Task Manager Dev</h1>
       <div className="flex items-center space-x-4">
         {user && (
