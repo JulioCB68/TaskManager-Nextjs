@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { GoogleUserProfile } from './types'
+import { GoogleUserProfile } from '../types'
 
 export async function getUserGoogle(accessToken: string): Promise<User> {
   try {

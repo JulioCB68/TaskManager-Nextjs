@@ -4,7 +4,7 @@ import nookies from 'nookies'
 export async function ProtectedRoute(context: GetServerSidePropsContext) {
   const cookies = nookies.get(context)
 
-  const hasToken = cookies.access_token_google
+  const hasToken = cookies.access_token
 
   if (!hasToken) {
     return {

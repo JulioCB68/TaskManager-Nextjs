@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { GithubUserData } from './types'
+import { GithubUserData } from '../types'
 
 export const getGithubToken = async (token: string): Promise<User> => {
   const response = await axios.get('/api/github-token', {

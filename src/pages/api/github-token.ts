@@ -2,6 +2,8 @@ import axios from 'axios'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { setCookie } from 'nookies'
 
+import { getGithubUser } from '@/services/github/user'
+
 export default async function getAccessToken(
   req: NextApiRequest,
   res: NextApiResponse,
@@ -24,18 +26,14 @@ export default async function getAccessToken(
 
   const { access_token: accessToken } = accessTokenResponse.data
 
-  const userResponse = await axios.get('https://api.github.com/user', {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  })
+  const maxAgeInSeconds = 30 * 60 * 60
 
-  const user = userResponse.data
-
-  setCookie({ res }, 'access_token_github', accessToken, {
-    maxAge: 30 * 24 * 60 * 60,
+  setCookie({ res }, 'access_token', accessToken, {
+    maxAge: maxAgeInSeconds,
     path: '/',
   })
+
+  const user = getGithubUser(accessToken)
 
   res.status(200).json(user)
 }

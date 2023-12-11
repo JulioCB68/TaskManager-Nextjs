@@ -7,8 +7,10 @@ import {
   useState,
 } from 'react'
 
-import { getUserGoogle } from '@/services/getUserGoogle'
-import { getGithubToken } from '@/services/githubToken'
+import { useLocalStorage } from '@/hooks/useLocalStorage'
+import { getGithubToken } from '@/services/github/githubToken'
+import { getGithubUser } from '@/services/github/user'
+import { getUserGoogle } from '@/services/google/getUserGoogle'
 
 interface IAuthContext {
   user: User | null
@@ -25,25 +27,36 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const [user, setUser] = useState<User | null>(null)
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
-    () => !!cookies.access_token_google || !!cookies.access_token_github,
+    () => !!cookies.access_token,
   )
 
+  const {
+    setItemInLocalStorage,
+    getItemInLocalStorage,
+    removeItemInLocalStorage,
+  } = useLocalStorage()
+
   useEffect(() => {
-    setIsAuthenticated(
-      !!cookies.access_token_google || !!cookies.access_token_github,
-    )
-    console.log(isAuthenticated)
-  }, [
-    cookies.access_token_github,
-    cookies.access_token_google,
-    isAuthenticated,
-  ])
+    setIsAuthenticated(!!cookies.access_token)
+    if (isAuthenticated) {
+      if (getItemInLocalStorage('login_mode') === 'google') {
+        getUserGoogle(cookies.access_token).then((response) =>
+          setUser(response),
+        )
+      } else {
+        getGithubUser(cookies.access_token).then((response) =>
+          setUser(response),
+        )
+      }
+    }
+  }, [isAuthenticated])
 
   async function loginWithGoogle(accessToken: string) {
     try {
       const userData = await getUserGoogle(accessToken)
       setIsAuthenticated(true)
       setUser(userData)
+      setItemInLocalStorage('login_mode', 'google')
     } catch (error) {
       console.error('loginWithGoogle Error fetching user data:', error)
     }
@@ -54,6 +67,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const userData = await getGithubToken(code)
       setIsAuthenticated(true)
       setUser(userData)
+      setItemInLocalStorage('login_mode', 'github')
     } catch (error) {
       console.error('loginWithGithub Error fetching user data:', error)
       throw error
@@ -61,9 +75,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 
   function logout() {
-    Object.keys(cookies).forEach((cookieName) => {
-      destroyCookie(null, cookieName)
-    })
+    destroyCookie(null, 'access_token')
+    removeItemInLocalStorage('login_mode')
     setIsAuthenticated(false)
     setUser(null)
   }

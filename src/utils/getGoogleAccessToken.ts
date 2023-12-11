@@ -8,8 +8,10 @@ export function getAccessTokenFromHashFragmentURL(accessToken: string) {
     const params = new URLSearchParams(fragment)
     const token = params.get(accessToken)
 
-    setCookie(undefined, 'access_token_google', token as string, {
-      maxAge: 10000 * 60 * 60,
+    const maxAgeInSeconds = 30 * 60 * 60
+
+    setCookie(undefined, 'access_token', token as string, {
+      maxAge: maxAgeInSeconds,
     })
   }
 }
