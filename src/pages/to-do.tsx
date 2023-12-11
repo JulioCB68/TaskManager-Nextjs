@@ -1,13 +1,14 @@
+import { GetServerSideProps } from 'next'
 import Image from 'next/image'
 import { RxDotsHorizontal } from 'react-icons/rx'
 
+import { ProtectedRoute } from '@/auth/ProtectedRoute'
 import { Header } from '@/components/Header'
-import { ProtectedRoute } from '@/components/ProtectedRoute'
 import { Task } from '@/components/Task/Task'
 import { useAuth } from '@/contexts/AuthContext'
 import { tasks } from '@/database/tasks'
 
-export default function Auth() {
+export default function ToDo() {
   const { user } = useAuth()
 
   const backlogTask = tasks.filter((task) => task.status === 'backlog')
@@ -16,7 +17,7 @@ export default function Auth() {
   const doneTask = tasks.filter((task) => task.status === 'done')
 
   return (
-    <ProtectedRoute>
+    <>
       <Header />
       <div className="flex text-black">
         <div className="w-72 border-r border-darkGray bg-background">
@@ -38,7 +39,7 @@ export default function Auth() {
 
         <div className="flex flex-1 items-center justify-between bg-background text-black">
           <div className="flex h-screen flex-1 flex-col px-8 py-4">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between py-4">
               <div className="flex items-center">
                 <h1 className="text-lg font-bold">Backlog Tasks</h1>
                 <p className="ml-2 flex h-5 w-5 items-center justify-center rounded-full bg-backlog text-center text-sm font-bold text-backlog">
@@ -56,7 +57,7 @@ export default function Auth() {
           </div>
 
           <div className="flex h-screen flex-1 flex-col px-8 py-4">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between py-4">
               <div className="flex items-center">
                 <h1 className="text-lg font-bold">To Do Tasks</h1>
                 <p className="ml-2 flex h-5 w-5 items-center justify-center rounded-full bg-toDo text-center text-sm font-bold text-toDo">
@@ -74,7 +75,7 @@ export default function Auth() {
           </div>
 
           <div className="flex h-screen flex-1 flex-col px-8 py-4">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between py-4">
               <div className="flex items-center">
                 <h1 className="text-lg font-bold">In Progress</h1>
                 <p className="ml-2 flex h-5 w-5 items-center justify-center rounded-full bg-inProcess text-center text-sm font-extrabold text-inProcess">
@@ -92,7 +93,7 @@ export default function Auth() {
           </div>
 
           <div className="flex h-screen flex-1 flex-col px-8 py-4">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between py-4">
               <div className="flex items-center">
                 <h1 className="text-lg font-bold">Done</h1>
                 <p className="ml-2 flex h-5 w-5 items-center justify-center rounded-full bg-done text-center text-sm font-bold text-done">
@@ -110,6 +111,10 @@ export default function Auth() {
           </div>
         </div>
       </div>
-    </ProtectedRoute>
+    </>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  return ProtectedRoute(context)
 }
