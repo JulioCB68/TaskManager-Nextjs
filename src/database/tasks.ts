@@ -48,4 +48,31 @@ export const tasks: Task[] = [
     comments: 4,
     createdAt: '13/12/2023',
   },
+  {
+    id: 7,
+    name: 'Model Awnser',
+    description:
+      'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Alias minima voluptatibus quia! Ullam architecto adipisci quidem impedit, fugit libero omnis voluptate necessitatibus ratione tempora vero placeat id, quaerat iusto consequuntur?',
+    status: 'done',
+    comments: 3,
+    createdAt: '08/12/2023',
+  },
+  {
+    id: 8,
+    name: 'Fazer modo dark',
+    description:
+      'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Alias minima voluptatibus quia! Ullam architecto adipisci quidem impedit, fugit libero omnis voluptate necessitatibus ratione tempora vero placeat id, quaerat iusto consequuntur?',
+    status: 'backlog',
+    comments: 0,
+    createdAt: '09/12/2023',
+  },
+  {
+    id: 9,
+    name: 'Funcionalidade de criar uma task',
+    description:
+      'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Alias minima voluptatibus quia! Ullam architecto adipisci quidem impedit, fugit libero omnis voluptate necessitatibus ratione tempora vero placeat id, quaerat iusto consequuntur?',
+    status: 'backlog',
+    comments: 0,
+    createdAt: '09/12/2023',
+  },
 ]
