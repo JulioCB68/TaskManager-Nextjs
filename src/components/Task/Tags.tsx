@@ -1,4 +1,4 @@
-import { statusBackgrounds, statusColors, statusLabels } from './utils/helpers'
+import { statusBackgrounds, statusColors, statusLabels } from './utils/taskStatusHelpers'
 
 interface TagsProps {
   status?: StatusType

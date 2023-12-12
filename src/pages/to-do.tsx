@@ -1,20 +1,18 @@
 import { GetServerSideProps } from 'next'
 import Image from 'next/image'
-import { RxDotsHorizontal } from 'react-icons/rx'
 
 import { ProtectedRoute } from '@/auth/ProtectedRoute'
+import { Actions } from '@/components/Actions'
 import { Header } from '@/components/Header'
+import { SectionTask } from '@/components/Task/SectionTask'
 import { Task } from '@/components/Task/Task'
 import { useAuth } from '@/contexts/AuthContext'
-import { tasks } from '@/database/tasks'
+import { useDragInDrop } from '@/hooks/useDragInDrop'
 
 export default function ToDo() {
   const { user } = useAuth()
 
-  const backlogTask = tasks.filter((task) => task.status === 'backlog')
-  const inProcessTask = tasks.filter((task) => task.status === 'inProgress')
-  const toDoTask = tasks.filter((task) => task.status === 'toDo')
-  const doneTask = tasks.filter((task) => task.status === 'done')
+  const { tasks, handleDragStart, handleDragOver, handleDrop } = useDragInDrop()
 
   return (
     <>
@@ -37,77 +35,67 @@ export default function ToDo() {
           </div>
         </div>
 
-        <div className="flex flex-1 items-center justify-between bg-background text-black">
-          <div className="flex h-screen flex-1 flex-col px-8 py-4">
-            <div className="flex items-center justify-between py-4">
-              <div className="flex items-center">
-                <h1 className="text-lg font-bold">Backlog Tasks</h1>
-                <p className="ml-2 flex h-5 w-5 items-center justify-center rounded-full bg-backlog text-center text-sm font-bold text-backlog">
-                  5
-                </p>
-              </div>
-              <RxDotsHorizontal
-                size={20}
-                className="cursor-pointer text-darkGray"
-              />
-            </div>
-            {backlogTask.map((task, index) => (
-              <Task key={index} task={task} />
-            ))}
-          </div>
+        <div className="flex-1 bg-background text-black">
+          <Actions />
 
-          <div className="flex h-screen flex-1 flex-col px-8 py-4">
-            <div className="flex items-center justify-between py-4">
-              <div className="flex items-center">
-                <h1 className="text-lg font-bold">To Do Tasks</h1>
-                <p className="ml-2 flex h-5 w-5 items-center justify-center rounded-full bg-toDo text-center text-sm font-bold text-toDo">
-                  3
-                </p>
-              </div>
-              <RxDotsHorizontal
-                size={20}
-                className="cursor-pointer text-darkGray"
-              />
-            </div>
-            {toDoTask.map((task, index) => (
-              <Task key={index} task={task} />
-            ))}
-          </div>
+          <div className="flex items-center justify-between">
+            <SectionTask
+              dragInDropId="backlog"
+              handleDragOver={(e) => handleDragOver(e)}
+              handleDrop={() => handleDrop('backlog')}
+              title="Backlog Taks"
+              lenght={tasks.filter((task) => task.status === 'backlog').length}
+            >
+              {tasks
+                .filter((task) => task.status === 'backlog')
+                .map((task, index) => (
+                  <Task key={index} task={task} onDragStart={handleDragStart} />
+                ))}
+            </SectionTask>
 
-          <div className="flex h-screen flex-1 flex-col px-8 py-4">
-            <div className="flex items-center justify-between py-4">
-              <div className="flex items-center">
-                <h1 className="text-lg font-bold">In Progress</h1>
-                <p className="ml-2 flex h-5 w-5 items-center justify-center rounded-full bg-inProcess text-center text-sm font-extrabold text-inProcess">
-                  2
-                </p>
-              </div>
-              <RxDotsHorizontal
-                size={20}
-                className="cursor-pointer text-darkGray"
-              />
-            </div>
-            {inProcessTask.map((task, index) => (
-              <Task key={index} task={task} />
-            ))}
-          </div>
+            <SectionTask
+              dragInDropId="toDo"
+              handleDragOver={(e) => handleDragOver(e)}
+              handleDrop={() => handleDrop('toDo')}
+              title="To do Tasks"
+              lenght={tasks.filter((task) => task.status === 'toDo').length}
+            >
+              {tasks
+                .filter((task) => task.status === 'toDo')
+                .map((task, index) => (
+                  <Task key={index} task={task} onDragStart={handleDragStart} />
+                ))}
+            </SectionTask>
 
-          <div className="flex h-screen flex-1 flex-col px-8 py-4">
-            <div className="flex items-center justify-between py-4">
-              <div className="flex items-center">
-                <h1 className="text-lg font-bold">Done</h1>
-                <p className="ml-2 flex h-5 w-5 items-center justify-center rounded-full bg-done text-center text-sm font-bold text-done">
-                  5
-                </p>
-              </div>
-              <RxDotsHorizontal
-                size={20}
-                className="cursor-pointer text-darkGray"
-              />
-            </div>
-            {doneTask.map((task, index) => (
-              <Task key={index} task={task} />
-            ))}
+            <SectionTask
+              dragInDropId="inProgress"
+              handleDragOver={(e) => handleDragOver(e)}
+              handleDrop={() => handleDrop('inProgress')}
+              title="In Progress Tasks"
+              lenght={
+                tasks.filter((task) => task.status === 'inProgress').length
+              }
+            >
+              {tasks
+                .filter((task) => task.status === 'inProgress')
+                .map((task, index) => (
+                  <Task key={index} task={task} onDragStart={handleDragStart} />
+                ))}
+            </SectionTask>
+
+            <SectionTask
+              dragInDropId="done"
+              handleDragOver={(e) => handleDragOver(e)}
+              handleDrop={() => handleDrop('done')}
+              title="Done"
+              lenght={tasks.filter((task) => task.status === 'done').length}
+            >
+              {tasks
+                .filter((task) => task.status === 'done')
+                .map((task, index) => (
+                  <Task key={index} task={task} onDragStart={handleDragStart} />
+                ))}
+            </SectionTask>
           </div>
         </div>
       </div>
