@@ -7,4 +7,5 @@ declare interface Task {
   status: StatusType
   comments: number
   createdAt: string
+  dateFinish?: string
 }

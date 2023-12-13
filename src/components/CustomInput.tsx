@@ -8,7 +8,7 @@ export function CustomInput({ label, ...inputProps }: ICustomInputProps) {
   return (
     <div className="h-full w-full">
       {label && (
-        <label className="mb-2 block font-bold" htmlFor={label}>
+        <label className="mb-2 mt-8 block font-bold" htmlFor={label}>
           {label}
         </label>
       )}
